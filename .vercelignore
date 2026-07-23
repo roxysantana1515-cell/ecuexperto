@@ -1,0 +1,9 @@
+# Archivos originales del logo (no los usa el sitio, se conservan como respaldo local)
+IMG_2408.PNG
+logo.png
+Logo SVG.svg
+
+# Archivos temporales o de prueba
+_*.png
+_*.html
+*.log

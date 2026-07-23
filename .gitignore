@@ -1,0 +1,11 @@
+# Temporales / capturas de prueba
+_*.png
+_*.html
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Vercel CLI
+.vercel
