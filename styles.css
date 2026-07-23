@@ -262,7 +262,7 @@ ul{ list-style:none; }
 .vag-content .section-title{ margin-top:6px; }
 
 .brand-row{
-  display:grid; grid-template-columns:repeat(2,1fr); gap:12px;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(84px, 1fr)); gap:12px;
   margin:26px 0 28px;
 }
 .vag-brand{
@@ -271,8 +271,8 @@ ul{ list-style:none; }
   padding:20px 12px; color:#dfe6ef; transition:.22s;
 }
 .vag-brand:hover{ border-color:var(--orange); color:#fff; transform:translateY(-2px); }
-.brand-mark{ height:34px; width:auto; color:currentColor; }
-.brand-mark-round{ height:44px; }
+.brand-mark{ height:30px; width:auto; max-width:64px; object-fit:contain; filter:brightness(0) invert(1); opacity:.9; transition:opacity .22s; }
+.vag-brand:hover .brand-mark{ opacity:1; }
 .brand-name{
   font-family:var(--f-head); font-weight:600; text-transform:uppercase; letter-spacing:1px;
   font-size:1rem;
@@ -419,7 +419,6 @@ ul{ list-style:none; }
 @media (min-width:640px){
   .cards-grid{ grid-template-columns:repeat(2,1fr); }
   .trust-bar{ grid-template-columns:repeat(4,1fr); }
-  .brand-row{ grid-template-columns:repeat(4,1fr); }
   .field-year{ grid-column:auto; }
   .field-row{ grid-template-columns:1fr 1fr 90px; }
   .hide-mobile{ display:inline; }
