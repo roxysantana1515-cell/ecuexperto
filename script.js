@@ -124,13 +124,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ==========================================================================
    Marcas: las flechas controlan la dirección del carrusel mientras
-   el puntero está sobre ellas (izquierda = retrocede, derecha = avanza)
+   el puntero está sobre ellas (izquierda = retrocede, derecha = avanza).
+   En táctil, deslizar el dedo sobre el carrusel hace lo mismo según
+   el sentido del deslizamiento.
    ========================================================================== */
 (() => {
   const tracks = document.querySelectorAll(".brands-track");
+  const marquee = document.querySelector(".brands-marquee");
   const btnLeft = document.querySelector(".brands-arrow-left");
   const btnRight = document.querySelector(".brands-arrow-right");
-  if (!tracks.length || !btnLeft || !btnRight) return;
+  if (!tracks.length || !marquee || !btnLeft || !btnRight) return;
 
   const setDirection = (direction) => {
     tracks.forEach((t) => {
@@ -147,6 +150,32 @@ document.addEventListener("DOMContentLoaded", () => {
   btnRight.addEventListener("focus", () => setDirection("normal"));
   btnRight.addEventListener("mouseleave", () => setDirection("normal"));
   btnRight.addEventListener("blur", () => setDirection("normal"));
+
+  // Táctil: el sentido del dedo al deslizar marca la dirección del carrusel
+  let lastTouchX = null;
+
+  marquee.addEventListener(
+    "touchstart",
+    (e) => {
+      lastTouchX = e.touches[0].clientX;
+    },
+    { passive: true }
+  );
+
+  marquee.addEventListener(
+    "touchmove",
+    (e) => {
+      const x = e.touches[0].clientX;
+      const delta = x - lastTouchX;
+      if (Math.abs(delta) > 2) {
+        setDirection(delta < 0 ? "normal" : "reverse");
+        lastTouchX = x;
+      }
+    },
+    { passive: true }
+  );
+
+  marquee.addEventListener("touchend", () => setDirection("normal"));
 })();
 
 /* ==========================================================================
