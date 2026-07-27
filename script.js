@@ -123,6 +123,33 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 
 /* ==========================================================================
+   Marcas: las flechas controlan la dirección del carrusel mientras
+   el puntero está sobre ellas (izquierda = retrocede, derecha = avanza)
+   ========================================================================== */
+(() => {
+  const tracks = document.querySelectorAll(".brands-track");
+  const btnLeft = document.querySelector(".brands-arrow-left");
+  const btnRight = document.querySelector(".brands-arrow-right");
+  if (!tracks.length || !btnLeft || !btnRight) return;
+
+  const setDirection = (direction) => {
+    tracks.forEach((t) => {
+      t.style.animationDirection = direction;
+    });
+  };
+
+  btnLeft.addEventListener("mouseenter", () => setDirection("reverse"));
+  btnLeft.addEventListener("focus", () => setDirection("reverse"));
+  btnLeft.addEventListener("mouseleave", () => setDirection("normal"));
+  btnLeft.addEventListener("blur", () => setDirection("normal"));
+
+  btnRight.addEventListener("mouseenter", () => setDirection("normal"));
+  btnRight.addEventListener("focus", () => setDirection("normal"));
+  btnRight.addEventListener("mouseleave", () => setDirection("normal"));
+  btnRight.addEventListener("blur", () => setDirection("normal"));
+})();
+
+/* ==========================================================================
    Formulario de contacto
    --------------------------------------------------------------------------
    Al enviar, arma un mensaje ordenado y abre WhatsApp con todo listo.
