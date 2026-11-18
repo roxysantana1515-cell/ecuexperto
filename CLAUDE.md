@@ -32,8 +32,11 @@ Que un cliente que llega desde Instagram entienda los servicios, confíe en el t
 ## Cómo hacer cambios frecuentes
 - **Datos de contacto:** editar `CONFIG` en `script.js`.
 - **Textos:** editar directamente en `index.html`.
-- **Foto del hero (inicio):** reemplazar `img/taller.jpg` (o cambiar el `src`). El cliente
-  planeaba poner una foto real de su laboratorio.
+- **Imágenes de inicio y de Garantía:** son ilustraciones propias de electrónica automotriz
+  (`img/hero-ecu.svg` y `img/diagnostico-escaner.svg`). Para usar una foto real del laboratorio,
+  subir la foto a `img/` y cambiar el `src` en `index.html` (hero y sección Garantía).
+- **Carrusel de marcas:** lo mueve `script.js` (posición continua, sin reinicios). No volver a
+  animarlo con `animation-direction` en CSS, porque produce saltos al cambiar de dirección.
 - **Colores/tamaños:** variables CSS `:root` al inicio de `styles.css`.
 
 ## Publicar (deploy)

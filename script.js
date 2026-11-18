@@ -123,59 +123,124 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 
 /* ==========================================================================
-   Marcas: las flechas controlan la dirección del carrusel mientras
-   el puntero está sobre ellas (izquierda = retrocede, derecha = avanza).
-   En táctil, deslizar el dedo sobre el carrusel hace lo mismo según
-   el sentido del deslizamiento.
+   Carrusel de marcas
+   --------------------------------------------------------------------------
+   El movimiento lo calcula JavaScript con UNA sola posición continua, así
+   que nunca se reinicia ni da saltos:
+   - Avanza solo y sin cortes (bucle infinito).
+   - Flecha izquierda/derecha (hover, foco o clic): cambia el sentido con
+     una frenada y aceleración suaves, pasando por cero sin brusquedad.
+   - Puntero sobre el carrusel: baja la velocidad de forma suave.
+   - Arrastrar con mouse o dedo: lo mueve a mano, y al soltar sigue con inercia.
    ========================================================================== */
 (() => {
-  const tracks = document.querySelectorAll(".brands-track");
   const marquee = document.querySelector(".brands-marquee");
+  const tracks = document.querySelectorAll(".brands-track");
   const btnLeft = document.querySelector(".brands-arrow-left");
   const btnRight = document.querySelector(".brands-arrow-right");
-  if (!tracks.length || !marquee || !btnLeft || !btnRight) return;
+  if (!marquee || !tracks.length) return;
 
-  const setDirection = (direction) => {
-    tracks.forEach((t) => {
-      t.style.animationDirection = direction;
-    });
+  // Si la persona pidió menos movimiento, queda quieto y se desliza a mano
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  marquee.classList.add("is-js");
+
+  const BASE = 55;      // px por segundo, ritmo normal
+  const FAST = 190;     // px por segundo, con una flecha activa
+  const SLOW = 0.3;     // fracción del ritmo normal al pasar el puntero
+  const EASE = 3.2;     // mayor = cambios de velocidad más rápidos
+
+  let pos = 0;          // posición continua (px)
+  let vel = BASE;       // velocidad actual (px/s), puede ser negativa
+  let arrowDir = 0;     // -1 / 0 / +1 según la flecha activa
+  let hovering = false;
+  let dragging = false;
+  let width = tracks[0].offsetWidth || 1;
+  let last = null;
+  let raf = null;
+
+  new ResizeObserver(() => { width = tracks[0].offsetWidth || 1; }).observe(tracks[0]);
+
+  const frame = (t) => {
+    if (last === null) last = t;
+    const dt = Math.min((t - last) / 1000, 0.05);
+    last = t;
+
+    if (!dragging) {
+      const target = arrowDir !== 0
+        ? arrowDir * FAST
+        : BASE * (hovering ? SLOW : 1);
+      vel += (target - vel) * (1 - Math.exp(-dt * EASE));
+      pos += vel * dt;
+    }
+
+    pos = ((pos % width) + width) % width;
+    const tr = `translate3d(${-pos}px,0,0)`;
+    tracks.forEach((el) => { el.style.transform = tr; });
+    raf = requestAnimationFrame(frame);
   };
 
-  btnLeft.addEventListener("mouseenter", () => setDirection("reverse"));
-  btnLeft.addEventListener("focus", () => setDirection("reverse"));
-  btnLeft.addEventListener("mouseleave", () => setDirection("normal"));
-  btnLeft.addEventListener("blur", () => setDirection("normal"));
+  const start = () => { if (raf === null) { last = null; raf = requestAnimationFrame(frame); } };
+  const stop = () => { if (raf !== null) { cancelAnimationFrame(raf); raf = null; } };
 
-  btnRight.addEventListener("mouseenter", () => setDirection("normal"));
-  btnRight.addEventListener("focus", () => setDirection("normal"));
-  btnRight.addEventListener("mouseleave", () => setDirection("normal"));
-  btnRight.addEventListener("blur", () => setDirection("normal"));
+  // Solo anima mientras el carrusel está a la vista
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? start() : stop()));
+    }).observe(marquee);
+  } else {
+    start();
+  }
 
-  // Táctil: el sentido del dedo al deslizar marca la dirección del carrusel
-  let lastTouchX = null;
+  // Flechas: hover / foco cambian el sentido; clic da un impulso
+  const bindArrow = (btn, dir) => {
+    if (!btn) return;
+    const on = () => { arrowDir = dir; };
+    const off = () => { if (arrowDir === dir) arrowDir = 0; };
+    btn.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") on(); });
+    btn.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") off(); });
+    btn.addEventListener("focus", on);
+    btn.addEventListener("blur", off);
+    btn.addEventListener("click", () => { vel = dir * 520; });
+  };
+  bindArrow(btnLeft, -1);
+  bindArrow(btnRight, 1);
 
-  marquee.addEventListener(
-    "touchstart",
-    (e) => {
-      lastTouchX = e.touches[0].clientX;
-    },
-    { passive: true }
-  );
+  // Puntero sobre el carrusel: frena suave (solo mouse)
+  marquee.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") hovering = true; });
+  marquee.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hovering = false; });
 
-  marquee.addEventListener(
-    "touchmove",
-    (e) => {
-      const x = e.touches[0].clientX;
-      const delta = x - lastTouchX;
-      if (Math.abs(delta) > 2) {
-        setDirection(delta < 0 ? "normal" : "reverse");
-        lastTouchX = x;
-      }
-    },
-    { passive: true }
-  );
-
-  marquee.addEventListener("touchend", () => setDirection("normal"));
+  // Arrastre con mouse o dedo, con inercia al soltar
+  let lastX = 0;
+  let lastT = 0;
+  marquee.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragging = true;
+    lastX = e.clientX;
+    lastT = performance.now();
+    marquee.setPointerCapture(e.pointerId);
+    marquee.classList.add("is-dragging");
+  });
+  marquee.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const now = performance.now();
+    const dx = e.clientX - lastX;
+    const dtm = Math.max(now - lastT, 1) / 1000;
+    pos -= dx;
+    vel = Math.max(-900, Math.min(900, -dx / dtm));
+    lastX = e.clientX;
+    lastT = now;
+  });
+  const endDrag = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    marquee.classList.remove("is-dragging");
+    if (marquee.hasPointerCapture && marquee.hasPointerCapture(e.pointerId)) {
+      marquee.releasePointerCapture(e.pointerId);
+    }
+  };
+  marquee.addEventListener("pointerup", endDrag);
+  marquee.addEventListener("pointercancel", endDrag);
 })();
 
 /* ==========================================================================
