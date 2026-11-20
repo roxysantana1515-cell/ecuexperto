@@ -37,8 +37,8 @@ Que un cliente que llega desde Instagram entienda los servicios, confíe en el t
 - **Banda "Reparamos a nivel de componentes":** foto `img/componentes.jpg` (2400x873, horizontal).
   Ocupa todo el ancho; el encuadre se ajusta con `object-position` en `.photo-band img`.
   Medida recomendada para reemplazarla: 2400x800, con lo importante al centro y a la derecha.
-- **Imagen de Garantía:** ilustración propia de tablero y escáner (`img/diagnostico-escaner.svg`).
-  `img/hero-ecu.svg` quedó de respaldo y ya no se usa en la página.
+- **Imagen de Garantía:** foto real del laboratorio, `img/garantia.jpg` (1920x1200, proporción 8:5).
+  `img/hero-ecu.svg` y `img/diagnostico-escaner.svg` son ilustraciones de respaldo y ya no se usan.
 - **Carrusel de marcas:** lo mueve `script.js` (posición continua, sin reinicios). No volver a
   animarlo con `animation-direction` en CSS, porque produce saltos al cambiar de dirección.
 - **Colores/tamaños:** variables CSS `:root` al inicio de `styles.css`.
