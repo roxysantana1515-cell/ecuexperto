@@ -34,6 +34,9 @@ Que un cliente que llega desde Instagram entienda los servicios, confíe en el t
 - **Textos:** editar directamente en `index.html`.
 - **Imagen de inicio (hero):** foto real del laboratorio, `img/laboratorio.jpg` (1600x1320, proporción
   800:660). Para cambiarla, reemplazar ese archivo manteniendo esa proporción.
+- **Banda "Reparamos a nivel de componentes":** foto `img/componentes.jpg` (2400x873, horizontal).
+  Ocupa todo el ancho; el encuadre se ajusta con `object-position` en `.photo-band img`.
+  Medida recomendada para reemplazarla: 2400x800, con lo importante al centro y a la derecha.
 - **Imagen de Garantía:** ilustración propia de tablero y escáner (`img/diagnostico-escaner.svg`).
   `img/hero-ecu.svg` quedó de respaldo y ya no se usa en la página.
 - **Carrusel de marcas:** lo mueve `script.js` (posición continua, sin reinicios). No volver a

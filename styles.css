@@ -306,10 +306,15 @@ ul{ list-style:none; }
    BANDA DE FOTO
    ========================================================================== */
 .photo-band{ position:relative; }
-.photo-band img{ width:100%; height:clamp(240px,45vw,400px); object-fit:cover; }
+.photo-band img{ width:100%; height:clamp(240px,45vw,400px); object-fit:cover; object-position:72% 40%; }
 .photo-band-overlay{
   position:absolute; inset:0; display:flex; align-items:center;
   background:linear-gradient(90deg, rgba(10,15,22,.9) 0%, rgba(10,15,22,.55) 55%, rgba(10,15,22,.15) 100%);
+}
+@media (max-width:640px){
+  .photo-band-overlay{
+    background:linear-gradient(90deg, rgba(10,15,22,.9) 0%, rgba(10,15,22,.72) 60%, rgba(10,15,22,.5) 100%);
+  }
 }
 .photo-band-overlay h2{
   font-family:var(--f-head); font-weight:700; text-transform:uppercase; color:#fff;
