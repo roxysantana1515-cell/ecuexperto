@@ -446,6 +446,29 @@ ul{ list-style:none; }
 .contact-direct:hover{ background:#e3f7ea; transform:translateY(-2px); }
 .contact-direct .ic-wa{ fill:var(--wa); }
 
+/* Pago con tarjeta (Getnet): oculto hasta que CONFIG.linkPago tenga una dirección */
+[data-pay-link][hidden], [data-pay-box][hidden]{ display:none !important; }
+.btn-pay{
+  background:linear-gradient(135deg,#1c7ad6 0%,#135ba3 100%); color:#fff;
+  box-shadow:0 14px 28px -12px rgba(19,91,163,.8), inset 0 1px 0 rgba(255,255,255,.3);
+}
+.btn-pay:hover{
+  background:linear-gradient(135deg,#2487e6 0%,#1763b3 100%);
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 20px 34px -12px rgba(19,91,163,.9), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.btn-pay .ic-card{ width:20px; height:20px; flex:none; }
+.pay-box{
+  margin-top:22px; padding:20px 20px 16px; border-radius:var(--radius);
+  border:1px dashed #b9cbe2; background:#f6faff;
+}
+.pay-title{
+  font-family:var(--f-head); font-weight:700; text-transform:uppercase; letter-spacing:.4px;
+  color:var(--ink); margin-bottom:12px; font-size:1.05rem;
+}
+.pay-note{ margin-top:10px; font-size:.88rem; color:var(--ink-2); }
+.footer-pay{ margin-top:10px; padding:11px 18px; font-size:.9rem; }
+
 .contact-form{
   background:#fff; border:1px solid var(--line); border-top:4px solid var(--orange);
   border-radius:var(--radius); padding:26px 22px; box-shadow:0 30px 56px -30px rgba(19,24,32,.5);

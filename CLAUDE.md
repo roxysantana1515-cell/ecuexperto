@@ -31,6 +31,10 @@ Que un cliente que llega desde Instagram entienda los servicios, confíe en el t
 
 ## Cómo hacer cambios frecuentes
 - **Datos de contacto:** editar `CONFIG` en `script.js`.
+- **Link de pago (Getnet):** pegar la dirección en `CONFIG.linkPago` de `script.js`. Mientras
+  esté vacío, los botones "Paga con tarjeta" (contacto y pie de página) quedan ocultos. Solo
+  acepta direcciones que empiecen con `https://`. El cobro lo hace la página de Getnet, el sitio
+  solo enlaza.
 - **Textos:** editar directamente en `index.html`.
 - **Imagen de inicio (hero):** foto real del laboratorio, `img/laboratorio.jpg` (1600x1320, proporción
   800:660). Para cambiarla, reemplazar ese archivo manteniendo esa proporción.

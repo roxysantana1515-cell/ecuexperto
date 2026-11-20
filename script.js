@@ -21,6 +21,11 @@ const CONFIG = {
   // Instagram del taller (URL completa)
   instagram: "https://instagram.com/ecu.experto.cl",
 
+  // Link de pago (Getnet). Pega aquí la dirección web de pago que te entrega Getnet
+  // (empieza con https://, por ejemplo la de micrositios.getnet.cl).
+  // Si lo dejas vacío (""), los botones de pago NO se muestran en la página.
+  linkPago: "",
+
   // Mensaje inicial al tocar cualquier botón de WhatsApp (sin usar el formulario)
   saludoWhatsApp:
     "¡Hola! Me gustaría revisar la falla de mi auto\n" +
@@ -50,6 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
     el.setAttribute("target", "_blank");
     el.setAttribute("rel", "noopener");
   });
+
+  // Link de pago: solo se muestran los botones si hay una dirección https válida
+  const linkPago = (CONFIG.linkPago || "").trim();
+  if (/^https:\/\//i.test(linkPago)) {
+    document.querySelectorAll("[data-pay-link]").forEach((el) => {
+      el.setAttribute("href", linkPago);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener");
+      el.hidden = false;
+    });
+    document.querySelectorAll("[data-pay-box]").forEach((el) => { el.hidden = false; });
+  }
 
   // Teléfono
   document.querySelectorAll("[data-phone-link]").forEach((el) => {
