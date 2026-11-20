@@ -234,7 +234,7 @@ ul{ list-style:none; }
 .stat span{ display:block; margin-top:6px; font-size:.84rem; color:var(--ink-2); }
 
 .about-media img{
-  width:100%; height:clamp(260px,60vw,460px); object-fit:cover;
+  width:100%; height:clamp(260px,60vw,460px); object-fit:cover; object-position:50% 45%;
   border-radius:var(--radius); box-shadow:var(--shadow);
 }
 

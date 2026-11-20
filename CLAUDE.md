@@ -37,6 +37,9 @@ Que un cliente que llega desde Instagram entienda los servicios, confíe en el t
 - **Banda "Reparamos a nivel de componentes":** foto `img/componentes.jpg` (2400x873, horizontal).
   Ocupa todo el ancho; el encuadre se ajusta con `object-position` en `.photo-band img`.
   Medida recomendada para reemplazarla: 2400x800, con lo importante al centro y a la derecha.
+- **Imagen de "Quiénes somos":** foto real del técnico, `img/equipo.jpg` (1600x2000, proporción 4:5).
+  En celular y tablet se recorta en horizontal; el encuadre se ajusta con `object-position`
+  en `.about-media img`. `img/audi-sq5.jpg` ya no se usa en la página.
 - **Imagen de Garantía:** foto real del laboratorio, `img/garantia.jpg` (1920x1200, proporción 8:5).
   `img/hero-ecu.svg` y `img/diagnostico-escaner.svg` son ilustraciones de respaldo y ya no se usan.
 - **Carrusel de marcas:** lo mueve `script.js` (posición continua, sin reinicios). No volver a
